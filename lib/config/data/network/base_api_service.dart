@@ -11,5 +11,5 @@ abstract class BaseApiServices {
   Future<dynamic> deleteApi(String url);
 
   /// Sends an UPDATE request (PUT/PATCH) to the given [url] and returns the response.
-  Future<dynamic> updateApi(String url);
+  Future<dynamic> updateApi(String url, dynamic data);
 }
