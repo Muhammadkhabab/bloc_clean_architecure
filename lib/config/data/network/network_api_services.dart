@@ -11,7 +11,7 @@ class NetworkApiServices implements BaseApiServices {
     dynamic responseJson;
     try {
       // Make the HTTP GET request with a timeout of 30 seconds
-      final response = await http.get(Uri.parse(url)).timeout(Duration(seconds: 30));
+      final response = await http.delete(Uri.parse(url)).timeout(Duration(seconds: 30));
 
       // Process the response
       responseJson = returnResponse(response);
@@ -74,6 +74,7 @@ class NetworkApiServices implements BaseApiServices {
       // Handle any other unexpected errors
       throw FetchDataException('An unexpected error occurred: ${e.toString()}');
     }
+    return responseJson;
   }
 
   // Sends a POST request to the specified [url] with the provided [data]
@@ -106,11 +107,35 @@ class NetworkApiServices implements BaseApiServices {
       // Handle any other unexpected errors
       throw FetchDataException('An unexpected error occurred: ${e.toString()}');
     }
+    return postResponse;
   }
 
   @override
-  Future updateApi(String url) {
-    throw UnimplementedError();
+  Future updateApi(String url, dynamic data) async {
+    dynamic postResponse;
+    try {
+      final http.Response response = await http.put(Uri.parse(url), body: data).timeout(const Duration(seconds: 10));
+      postResponse = returnResponse(response);
+    } on SocketException {
+      // Handle no internet connection
+      throw NoInternetException('No internet connection. Please check your network and try again.');
+    } on TimeoutException {
+      // Handle request timeout
+      throw TimeoutException('The request took too long to respond. Please try again later.');
+    } on http.ClientException {
+      // Handle HTTP client errors (e.g., connection issues)
+      throw FetchDataException('There was an issue retrieving the data. Please try again.');
+    } on FormatException {
+      // Handle JSON parsing errors
+      throw InvalidInputException('The response data is invalid. Please check the server response.');
+    } on AppException {
+      // Re-throw custom exceptions from returnResponse
+      rethrow;
+    } catch (e) {
+      // Handle any other unexpected errors
+      throw FetchDataException('An unexpected error occurred: ${e.toString()}');
+    }
+    return postResponse;
   }
 
   dynamic returnResponse(http.Response response) {
