@@ -14,6 +14,11 @@ class _HomeViewState extends State<HomeView> {
       appBar: AppBar(
         title: Text('Home Screen'),
       ),
+      body: Column(
+        children: [
+
+        ],
+      ),
     );
   }
 }
