@@ -16,7 +16,8 @@ class _HomeViewState extends State<HomeView> {
       ),
       body: Column(
         children: [
-
+          Icon(Icons.home),
+          Text('Home Screen'),
         ],
       ),
     );
