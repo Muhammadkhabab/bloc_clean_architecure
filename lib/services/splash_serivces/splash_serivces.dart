@@ -8,7 +8,7 @@ class SplashServices {
   void checkAuthentication(BuildContext context) {
     Timer(
       const Duration(seconds: 2),
-          () => Navigator.pushNamedAndRemoveUntil(context, RoutesName.home, (route) => false),
+          () => Navigator.pushNamedAndRemoveUntil(context, RoutesName.login, (route) => false),
     );
   }
 }
